@@ -1,16 +1,11 @@
 const express = require("express")
+const routes = require('./routes')
 
-class AppController {
-    constructor() {
-        this.express = express()
+require('./database')
 
-        this.express.use(express.json())
-        this.routes()
-    }
+const app = express()
 
-    routes() {
-        this.express.use(require("./routes"))
-    }
-}
+app.use(express.json())
+app.use(routes)
 
-module.exports = new AppController().express
+module.exports = app

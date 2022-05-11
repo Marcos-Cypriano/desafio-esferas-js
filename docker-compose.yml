@@ -1,9 +1,9 @@
 version: "3.9"
 
 services:
-  database_users:
+  database_esferas:
     image: postgres
-    container_name: database_users
+    container_name: database_esferas
     restart: always
     ports:
       - 5432:5432
@@ -22,9 +22,11 @@ services:
     volumes:
       - .:/usr/app
     links:
-      - database_users
+      - database_esferas
     depends_on:
-      - database_users
+      - database_esferas
+    environment:
+      - DB_HOST=database_esferas
 
 volumes:
   pgdata:
