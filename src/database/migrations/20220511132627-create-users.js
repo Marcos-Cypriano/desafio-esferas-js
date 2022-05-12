@@ -16,10 +16,13 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      document: Sequelize.STRING,
+      document: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       created_at: {
         type: Sequelize.DATE,
-        allowNull: true
+        allowNull: false
       },
       updated_at: {
         type: Sequelize.DATE,

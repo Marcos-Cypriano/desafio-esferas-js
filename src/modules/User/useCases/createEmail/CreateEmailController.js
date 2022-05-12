@@ -1,10 +1,10 @@
-const Phone = require("../../models/Phone")
+const Email = require("../../models/Email")
 const User = require("../../models/User")
 
-class CreatePhoneController {
+class CreateEmailController {
     async handle(request, response) {
         const { user_id } = request.params
-        const { phone } = request.body
+        const { email } = request.body
 
         // Validando se usuário já existe
         const userAlreadyExists = await User.findByPk(user_id)
@@ -15,41 +15,43 @@ class CreatePhoneController {
             })
         }
 
-        // Validando telefone
-        if (!phone) {
+        // Validando email
+        if (!email) {
             return response.status(400).json({
-                error: "Preencha o telefone!"
+                error: "Preencha o email!"
             })
         }
 
-        if (isNaN(phone) || phone.length < 8 || phone.length > 9) {
+        var validaMail = /\S+@\S+\.\S+/
+
+        if (!validaMail.test(email)) {
             return response.status(400).json({
-                error: "Telefone inválido!"
+                error: "Email inválido!"
             })
         }
 
         // Validando se email já existe
-        const phoneAlreadyExists = await Phone.findOne({
+        const emailAlreadyExists = await Email.findOne({
             where: {
-                phone,
+                email,
                 user_id
             }
         })
 
-        if (phoneAlreadyExists) {
+        if (emailAlreadyExists) {
             return response.status(400).json({
-                error:  `Telefone ${phone} já está cadastrado neste usuário!`
+                error: `Email ${email} já está cadastrado neste usuário!`
             })
         }
 
-        // Cadastrando o telefone
+        // Cadastrando o email
         try {
-            const userPhone = await Phone.create({
-                phone,
+            const userEmail = await Email.create({
+                email,
                 user_id
             })
 
-            return response.status(201).json(userPhone)
+            return response.status(201).json(userEmail)
         } catch (err) {
             return response.status(400).json({
                 error: err
@@ -58,4 +60,4 @@ class CreatePhoneController {
     }
 }
 
-module.exports = { CreatePhoneController }
+module.exports = { CreateEmailController }

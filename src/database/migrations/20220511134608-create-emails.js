@@ -5,20 +5,19 @@ module.exports = {
     await queryInterface.createTable('emails', {
       id: {
         type: Sequelize.UUID,
-        defaultValeu: Sequelize.UUIDV4,
         primaryKey: true,
         allowNull: false
       },
-      email: Sequelize.STRING,
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       user_id: {
         type: Sequelize.UUID,
-        references: {
-          model: {
-            tableName: 'users'
-          }
-        },
-        key: 'id',
-        allowNull: false
+        allowNull: false,
+        references: { model: 'users', key: 'id'},
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       created_at: {
         type: Sequelize.DATE,

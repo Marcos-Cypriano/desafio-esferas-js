@@ -1,5 +1,7 @@
 const Phone = require('../../models/Phone')
 const User = require('../../models/User')
+const Email = require('../../models/Email')
+const cpfValidator = require('../../../../utils/documentValidator')
 
 class CreateUserController {
     async handle(request, response) {
@@ -32,41 +34,11 @@ class CreateUserController {
 
         // Verificando validade do CPF
         if (document) {
-            try {
-                var documentArray = document.split("").map(Number)
-            } catch (err) {
+            const documentValidator = cpfValidator(document)
+
+            if (documentValidator.message === "CPF inválido!") {
                 return response.status(400).json({
-                    error: err
-                })
-            }
-    
-            documentArray.reduce((previousValue, currentValue) => {
-                if (previousValue === currentValue) {
-                    return response.status(400).json({
-                        error: "CPF inválido!"
-                    })
-                } else {
-                    previousValue = currentValue
-                }
-            }, 10)
-    
-            var validaCpf1 = 0
-            var validaCpf2 = 0
-    
-            for (var i = 0; i < 9; i++) {
-                validaCpf1 += (10 - i) * documentArray[i]
-            }
-    
-            for (var i = 0; i < 10; i++) {
-                validaCpf2 += (11 - i) * documentArray[i]
-            }
-    
-            if (document.length != 11 ||    // Não possua 11 algarismos
-                    ((validaCpf1 * 10) % 11) != document[9] ||    // Verificador do primeiro dígito de validação
-                    ((validaCpf2 * 10) % 11) != document[10]    // Verificador do segundo dígito de validação
-                ) {
-                return response.status(400).json({
-                    error: "CPF inválido!"
+                    error: documentValidator.message
                 })
             }
         }
@@ -87,33 +59,28 @@ class CreateUserController {
 
         // Inserindo novo usuário, telefone e email
         try {
-            var user = await User.create({
+            const user = await User.create({
                 name,
                 last_name,
                 document
             })
-        } catch (err) {
-            return response.status(400).json({
-                error: err
-            })
-        }
 
-        try {
-            const phone = await Phone.create({
+            await Phone.create({
                 phone,
                 user_id: user.id
             })
-
-            // if (email) {
-            //     const email = await connection('emails').insert({
-            //         email,
-            //         user_id: user.id
-            //     })
-            // }
-
+    
+            if (email) {
+                await Email.create({
+                    email,
+                    user_id: user.id
+                })
+            }
+    
             return response.status(201).json({
                 message: `Usuário ${user.name} ${user.last_name} foi cadastrado com sucesso!`
             })
+
         } catch (err) {
             return response.status(400).json({
                 error: err

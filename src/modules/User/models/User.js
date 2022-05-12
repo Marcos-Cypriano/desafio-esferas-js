@@ -20,6 +20,7 @@ class User extends Model {
 
     static associate(models) {
         this.hasMany(models.Phone, { foreignKey: 'user_id', as: 'phones'})
+        this.hasMany(models.Email, { foreignKey: 'user_id', as: 'emails'})
     }
 }
 

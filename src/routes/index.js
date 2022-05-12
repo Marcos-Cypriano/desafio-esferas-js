@@ -1,26 +1,30 @@
 const express = require('express')
+const { AlterUserController } = require('../modules/User/useCases/alterUser/AlterUserController')
+const { CreateEmailController } = require('../modules/User/useCases/createEmail/CreateEmailController')
 const { CreatePhoneController } = require('../modules/User/useCases/createPhone/CreatePhoneController')
 const { CreateUserController } = require('../modules/User/useCases/createUser/CreateUserController')
+const { DeleteUserController } = require('../modules/User/useCases/deleteUser/DeleteUserController')
+const { GetUsersController } = require('../modules/User/useCases/getUsers/GetUsersController')
 
 const routes = express.Router()
 
+const getUsersController = new GetUsersController
 const createUserController = new CreateUserController
 const createPhoneController = new CreatePhoneController
+const createEmailController = new CreateEmailController
+const deleteUserController = new DeleteUserController
+const alterUserController = new AlterUserController
 
-routes.get('/list', (req, res) => {
-    res.send("Hello world!")
-})
+routes.get('/list', getUsersController.handle)
 
-routes.post('/cadastro', createUserController.handle)
+routes.post('/register', createUserController.handle)
 
 routes.post('/phone/:user_id', createPhoneController.handle)
 
-routes.patch('/cadastro/:user_id', (req, res) => {
-    res.send("Hello world!")
-})
+routes.post('/email/:user_id', createEmailController.handle)
 
-routes.delete('/cadastro/:user_id', (req, res) => {
-    res.send("Hello world!")
-})
+routes.patch('/alter/:user_id', alterUserController.handle)
+
+routes.delete('/delete', deleteUserController.handle)
 
 module.exports = routes
