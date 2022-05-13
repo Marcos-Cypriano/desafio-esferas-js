@@ -53,7 +53,7 @@ class CreateEmailController {
 
             return response.status(201).json(userEmail)
         } catch (err) {
-            return response.status(400).json({
+            return response.status(500).json({
                 error: err
             })
         }

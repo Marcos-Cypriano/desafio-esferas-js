@@ -5,6 +5,7 @@ const { CreatePhoneController } = require('../modules/User/useCases/createPhone/
 const { CreateUserController } = require('../modules/User/useCases/createUser/CreateUserController')
 const { DeleteUserController } = require('../modules/User/useCases/deleteUser/DeleteUserController')
 const { GetUsersController } = require('../modules/User/useCases/getUsers/GetUsersController')
+const { SearchUserController } = require('../modules/User/useCases/searchUser/SearchUserController')
 
 const routes = express.Router()
 
@@ -14,8 +15,11 @@ const createPhoneController = new CreatePhoneController
 const createEmailController = new CreateEmailController
 const deleteUserController = new DeleteUserController
 const alterUserController = new AlterUserController
+const searchUserController = new SearchUserController
 
 routes.get('/list', getUsersController.handle)
+
+routes.post('/search', searchUserController.handle)
 
 routes.post('/register', createUserController.handle)
 

@@ -51,7 +51,7 @@ class CreatePhoneController {
 
             return response.status(201).json(userPhone)
         } catch (err) {
-            return response.status(400).json({
+            return response.status(500).json({
                 error: err
             })
         }
