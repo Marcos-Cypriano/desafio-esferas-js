@@ -17,7 +17,7 @@ class SearchUserController {
         
         if (regValidator.test(pesquisa)) {
             return response.status(400).json({
-                error: "Preencha com uma pesquisa válida (apenas letras ou números)."
+                error: "Preencha com uma pesquisa válida (sem caracteres especiais)."
             })
         }
 

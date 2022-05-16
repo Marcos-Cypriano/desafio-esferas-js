@@ -562,7 +562,7 @@
             "post": {
                 "tags": ["Post"],
                 "summary": "Pesquisa na tabela de cadastros.",
-                "description": "Full text search na tabela de usuários.",
+                "description": "Text search na tabela de usuários.",
                 "requestBody": {
                     "required": true,
                     "content": {

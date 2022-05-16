@@ -1,7 +1,6 @@
 const cpfValidator = require("../../../../utils/documentValidator")
 const User = require("../../models/User")
 
-
 class AlterUserController {
     async handle(request, response) {
         const { user_id } = request.params
@@ -71,7 +70,7 @@ class AlterUserController {
         }
 
         return response.status(200).json({
-            message: `Usuário *${user.name} ${user.last_name}* alterado com sucesso!`
+            message: `Usuário *${name} ${last_name}* alterado com sucesso!`
         })
     }
 }
