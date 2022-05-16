@@ -7,11 +7,17 @@ class CreateEmailController {
         const { email } = request.body
 
         // Validando se usuário já existe
-        const userAlreadyExists = await User.findByPk(user_id)
+        try {
+            const userAlreadyExists = await User.findByPk(user_id)
 
-        if (!userAlreadyExists) {
-            return response.status(404).json({
-                error: `Usuário não encontrado!`
+            if (!userAlreadyExists) {
+                return response.status(404).json({
+                    error: "Usuário não encontrado!"
+                })
+            }
+        } catch (err) {
+            return response.status(400).json({
+                error: err
             })
         }
 

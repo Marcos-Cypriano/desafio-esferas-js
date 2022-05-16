@@ -44,16 +44,22 @@ class CreateUserController {
         }
 
         // Validando se usuário já existe
-        const userAlreadyExists = await User.findOne({
-            where: {
-                name,
-                last_name
-            }
-        })
+        try {
+            const userAlreadyExists = await User.findOne({
+                where: {
+                    name,
+                    last_name
+                }
+            })
 
-        if (userAlreadyExists) {
+            if (userAlreadyExists) {
+                return response.status(404).json({
+                    error: `Usuário *${name} ${last_name} já existe!`
+                })
+            }
+        } catch (err) {
             return response.status(400).json({
-                error: `Usuário *${name} ${last_name}* já existe!`
+                error: err
             })
         }
 

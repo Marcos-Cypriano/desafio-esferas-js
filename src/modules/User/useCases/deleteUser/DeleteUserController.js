@@ -6,11 +6,17 @@ class DeleteUserController {
         const { user_id } = request.body
 
         // Verificando existência do usuário
-        const userAlreadyExists = await User.findByPk(user_id)
+        try {
+            const userAlreadyExists = await User.findByPk(user_id)
 
-        if (!userAlreadyExists) {
-            return response.status(404).json({
-                error: "Usuário não encontrado!"
+            if (!userAlreadyExists) {
+                return response.status(404).json({
+                    error: "Usuário não encontrado!"
+                })
+            }
+        } catch (err) {
+            return response.status(400).json({
+                error: err
             })
         }
 

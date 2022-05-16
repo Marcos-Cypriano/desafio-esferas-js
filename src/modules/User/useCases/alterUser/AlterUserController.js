@@ -7,11 +7,17 @@ class AlterUserController {
         const { name, last_name, document } = request.body
 
         // Verificando usuário
-        const user = await User.findByPk(user_id)
+        try {
+            const userAlreadyExists = await User.findByPk(user_id)
 
-        if (!user) {
-            return response.status(404).json({
-                error: "Usuário não encontrado!"
+            if (!userAlreadyExists) {
+                return response.status(404).json({
+                    error: "Usuário não encontrado!"
+                })
+            }
+        } catch (err) {
+            return response.status(400).json({
+                error: err
             })
         }
 
@@ -69,8 +75,10 @@ class AlterUserController {
             }
         }
 
+        const newUser = await User.findByPk(user_id)
+
         return response.status(200).json({
-            message: `Usuário *${name} ${last_name}* alterado com sucesso!`
+            message: `Usuário *${newUser.name} ${newUser.last_name}* alterado com sucesso!`
         })
     }
 }

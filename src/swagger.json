@@ -180,6 +180,21 @@
                             }
                         }
                     },
+                    "404": {
+                        "description": "Usuário não encontrado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            } 
+                        }
+                    },
                     "500": {
                         "description": "Erro do servidor",
                         "content": {
